@@ -1,5 +1,16 @@
-Text = null
+###
+Chuo Line E233 TrainVision
 
+main class
+
+Copyright (c) 2014 Koutarou Yabe
+
+This software is released under the MIT License.
+
+http://opensource.org/licenses/mit-license.php
+###
+
+Text = null
 
 class @TrainVision
 	timer: null

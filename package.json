@@ -1,0 +1,17 @@
+{
+  "name": "trainvision",
+  "version": "0.0.1",
+  "description": "Yet another Chuo Line E233 TrainVision",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "trainvision"
+  ],
+  "author": "shobotch",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-script": "^1.7.1"
+  }
+}
