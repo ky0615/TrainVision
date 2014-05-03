@@ -23,7 +23,15 @@ class @TrainVision
 	
 	label:
 		station: null
-
+		main_parts:
+			next: null
+			next_is: null
+			num_text: null
+			num: null
+			time_text: null
+			time: null
+	scene:
+		main: null
 	color:
 		green: "#009245"
 
@@ -58,7 +66,7 @@ class @TrainVision
 
 
 	game_onload: =>
-		@_initLabel()
+		@initMainPanel 0
 		return
 
 	_initGame: (w,h)=>
@@ -69,21 +77,21 @@ class @TrainVision
 		@game.fps = @SETTING_FPS
 		@game.onload = @game_onload
 		@game.start()
-		# $("#enchant-stage")
-		# 	.css("width": "10px")
 		return
 
-	scene: null
-
-	_initLabel: (lang_flag)=>
+	initMainPanel: (lang_flag)=>
 		lang_flag = lang_flag || 0
+		if !@scene.main	
+			@scene.main = new Scene
+			@game.pushScene @scene.main
 
-		if !@scene	
-			@scene = new Scene(@convSize 1000, @convSize 5000)
-			@game.pushScene @scene
+		@set_station_label lang_flag
+		@set_main_panel lang_flag
+
+	set_station_label: (lang_flag)=>
 		if !@label.station
 			@label.station = new Label(@station[lang_flag])
-			@scene.addChild @label.station
+			@scene.main.addChild @label.station
 
 		station = @label.station
 		station.text = @station[lang_flag]
@@ -204,7 +212,19 @@ class @TrainVision
 			station.scaleX = scale
 
 			station.font = station._layer._element.style.font = "normal bold " + fontsize + "px iwata";
-		return 
+		return
+
+	set_main_panel: (lang_flag)=>
+		if !@scene	
+			@scene = new Scene(@convSize 1000, @convSize 5000)
+			@game.pushScene @scene
+		if !@label.station
+			@label.station = new Label(@station[lang_flag])
+			@scene.addChild @label.station
+		if lang_flag == 1
+			 # English
+		else
+			# Japanese
 
 	_initSize: =>
 		width = $(window).width()
@@ -258,7 +278,7 @@ class @TrainVision
 
 		# console.log "update main"
 		@set_station 
-		@_initLabel @_timerHookCount % 3
+		@initMainPanel @_timerHookCount % 3
 		@_timerHookCount++
 		return
 
