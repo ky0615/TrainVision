@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>TrainVision</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <script type="text/javascript" src="lib/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="lib/enchant.js"></script>
+        <script type="text/javascript" src="src/js/init.js"></script>
+        <script type="text/javascript" src="src/js/TrainVision.js"></script>
+
+        <style type="text/css">
+        
+        html{
+            display: table;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0;
+        }
+        
+        body {
+            display: table-cell;
+            margin: 0 auto;
+            min-height: 100%;
+            padding: 0;
+            vertical-align: middle;
+        }
+        
+        div#base{
+        }
+        
+        div#enchant-stage{
+            margin: auto auto;
+            background-image: url("img/bg_e233.jpg");
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        
+        @font-face{
+            font-family: "iwata";
+            src: url("font/iwp3gd.ttf");
+        }
+    
+        @font-face{
+            font-family: "Arial Bold";
+            src: url("font/Arial Bold.ttf");
+        }
+
+        </style>
+    </head>
+    <body>
+        <div id="base">
+            <div id="enchant-base">
+                <div id="enchant-stage"></div>
+            </div>
+        </div>
+    </body>
+</html>
