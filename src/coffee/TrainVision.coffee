@@ -16,9 +16,6 @@ class @TrainVision
 	timer: null
 	timerCB: []
 
-	imgPath:
-		bg: "img/bg_e233.jpg"
-
 	SETTING_FPS: 30
 	game: null
 
@@ -42,7 +39,9 @@ class @TrainVision
 			time_text: null
 			time: null
 	scene:
+		station: null
 		main: null
+
 	color:
 		green: "#009245"
 
@@ -63,7 +62,7 @@ class @TrainVision
 			@set_station "tachikawa"
 
 		@_initSize()
-		@_initGame @STAGE_SIZE.w, @STAGE_SIZE.h
+		@_initGame @BG_SIZE.w, @BG_SIZE.h
 		if !timer
 			timer = setInterval @_timerHook, 1000
 		@setTimerConf()
@@ -75,13 +74,13 @@ class @TrainVision
 		if(!@station)
 			@station = Text.station["tachikawa"]
 
-
 	game_onload: =>
 		@initMainPanel 0
 		return
 
 	_initGame: (w,h)=>
 		@game = new Game w, h
+		@game.scale = @ZOOM
 		for k, v of @imgPath
 			@game.preload v
 
@@ -96,24 +95,26 @@ class @TrainVision
 			@scene.main = new Scene
 			@game.pushScene @scene.main
 
+		if !@scene.station
+			@scene.station = new Scene
+			@game.pushScene @scene.station
+
 		@set_station_label lang_flag
 		@set_main_panel lang_flag
 
 	set_station_label: (lang_flag)=>
 		if !@label.station
 			@label.station = new Label(@station[lang_flag])
-			@scene.main.addChild @label.station
+			@scene.station.addChild @label.station
 
 		station = @label.station
 		station.text = @station[lang_flag]
 		station.textAlign = "center"
 		station.color = @color.green
-		fontsize = @convSize(300)
+		fontsize = 300
 
-		# station.x = @convSize(520)
-		# station.y = @convSize(130)
-		station.width = @convSize 1000
-		station.height = @convSize 400
+		station.width = 1000
+		station.height = 400
 
 		station.scaleX = station.scaleY = 1
 		station._layer._element.style.letterSpacing = 'normal'
@@ -121,18 +122,18 @@ class @TrainVision
 
 		if lang_flag == 0
 			# Japanese
-			@label.station.x = @convSize(520)
-			@label.station.y = @convSize(130)
+			@label.station.x = 520
+			@label.station.y = 130
 
 			if station.text.length >= 5
 				# 文字がはみ出すのでサイズを調整
-				station.width = @convSize 1500
+				station.width = 1500
 				station.textAlign = "left"
 				station.scaleX = station.text.length/8
 				station.x = station.x - (station.x * station.text.length/10.5)
 			if station.text.length == 4
 				station.scaleX = 4/5
-				station.x -= @convSize 75
+				station.x -= 75
 			station.font = station._layer._element.style.font = "normal bold " + fontsize + "px iwata";
 		else if lang_flag == 1
 			# English
@@ -174,10 +175,10 @@ class @TrainVision
 					x = -20
 			
 			station.font = "normal bold " + fontsize + "px Arial";
-			station.width = @convSize width
+			station.width = width
 			station.textAlign = align
-			@label.station.x = @convSize x
-			@label.station.y = @convSize y
+			@label.station.x = x
+			@label.station.y = y
 			station.scaleX = scale
 
 		else if lang_flag == 2
@@ -216,24 +217,34 @@ class @TrainVision
 
 
 
-			station.width = @convSize width
+			station.width = width
 			station.textAlign = align
-			@label.station.x = @convSize x
-			@label.station.y = @convSize y
+			@label.station.x = x
+			@label.station.y = y
 			station.scaleX = scale
 
 			station.font = station._layer._element.style.font = "normal bold " + fontsize + "px iwata";
 		return
 
 	set_main_panel: (lang_flag)=>
-		if !@scene	
-			@scene = new Scene(@convSize 1000, @convSize 5000)
-			@game.pushScene @scene
-		if !@label.station
-			@label.station = new Label(@station[lang_flag])
-			@scene.addChild @label.station
+		if lang_flag isnt 1 then lang_flag = 0
+		l = {}
+
+		for k, v of @label.main_parts
+			if not @label.main_parts[k]
+				console.log "create instance"
+				@label.main_parts[k] = new Label "次は"
+				@scene.main.addChild @label.main_parts[k]
+			l[k] = @label.main_parts[k]
+
+		l.next.text = Text.next[lang_flag]
+		l.next.textAlign = "right"
+		l.next.moveTo 200, 150
+		l.next.font = "80px"
+
 		if lang_flag == 1
 			 # English
+
 		else
 			# Japanese
 
@@ -243,22 +254,19 @@ class @TrainVision
 		# TrainVisonを4:3で固定するため、横の長さを縦の長さから計算します。
 		if(height < width)
 			# 横長の画面の場合
-			@STAGE_SIZE.w = Math.floor($(window).height() * (4/3))
-			@STAGE_SIZE.h = Math.floor $(window).height()
+			@STAGE_SIZE.w = Math.floor(height * (4/3))
+			# @STAGE_SIZE.h = Math.floor $(window).height()
 		else if(width < height)
 			# 縦長の画面の場合
-			@STAGE_SIZE.w = Math.floor $(window).width()
-			@STAGE_SIZE.h = Math.floor $(window).width()  * (3/4)
+			@STAGE_SIZE.w = Math.floor width
+			# @STAGE_SIZE.h = Math.floor $(window).width()  * (3/4)
 
 		@ZOOM = @STAGE_SIZE.w / @BG_SIZE.w
-
-		console.log "w: " + @STAGE_SIZE.w
-		console.log "h: " + @STAGE_SIZE.h 
 
 		return
 
 	convSize:(size)=>
-		return @ZOOM * size
+		return size
 
 	# Āā Īī Ūū Ēē Ōō
 
