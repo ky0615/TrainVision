@@ -50,6 +50,10 @@ class @TrainVision
 	station: []
 	station_name: "tachikawa"
 
+	train:
+		car_num: 13
+		go: "東京行"
+
 	station_key: []
 
 	init: =>
@@ -105,7 +109,7 @@ class @TrainVision
 		@set_main_panel lang_flag
 
 	set_station_label: (lang_flag)=>
-		lang_flag = 2
+		# lang_flag = 1
 		if !@label.station
 			@label.station = new Label(@station[lang_flag])
 			@scene.station.addChild @label.station
@@ -152,6 +156,7 @@ class @TrainVision
 				y = 150
 			if @station_name == "tachikawa" or @station_name == "kunitachi"
 				y = 150
+				width = 3000
 			if @station_name.length >= 9
 				width = 1500
 				scale = 0.65
@@ -196,40 +201,19 @@ class @TrainVision
 		else if lang_flag == 2
 			# ひらがな
 			width = 2500
-			x = 280
+			x = -220
 			y = 140
 			scale = 0.8
 			align = "center"
 
 			if @station[lang_flag].length >= 5
-				x = 260
 				scale = 0.6
-
-				# ここでフリーズ
-				station._layer._element.style.letterSpacing = '-6px'
 			if @station[lang_flag].length == 6
-				x = 220
 				scale = 0.55
-			if @station[lang_flag].length == 7
-				width = 2500
-				scale = 0.6
-				# fontsize = fontsize / 1.15
-				x = 25
-				y = 150
-				# align = "left"
-				# station._layer._element.style.letterSpacing = '-10px'
-
-			if @station[lang_flag].length >= 8
-				width = 2500
-				scale = 0.51
-				fontsize = fontsize / 1.15
-				x = -60
-				y = 150
-				align = "left"
-				station._layer._element.style.letterSpacing = '-10px'
-
-
-
+			else if @station[lang_flag].length == 7
+				scale = 0.46
+			else if @station[lang_flag].length == 8
+				scale = 0.3
 
 			station.width = width
 			station.textAlign = align
@@ -243,24 +227,67 @@ class @TrainVision
 	set_main_panel: (lang_flag)=>
 		if lang_flag isnt 1 then lang_flag = 0
 		l = {}
-
+		time = new Date()
 		for k, v of @label.main_parts
 			if not @label.main_parts[k]
 				@label.main_parts[k] = new Label()
 				@scene.station.addChild @label.main_parts[k]
 			l[k] = @label.main_parts[k]
+			l[k].width = 500
+			l[k].text = Text[k][lang_flag]
+			l[k].textAlign = "right"	
 
-		l.next.text = Text.next[lang_flag]
-		l.next.width = 500
-		l.next.textAlign = "right"
-		l.next.moveTo 0, 260
-		l.next.font = "180px iwata"
+		l.time_text.textAlign = "center"
+		
+		l.num.text = @train.car_num
+		l.num.textAlign = "center"
+		l.num.font = "normal bold 135px Arial"
+		l.num.x = 1685
+		l.num.y = 35
+
+		toDoubleDigits = (num)->
+			num += ""
+			if num.length is 1 then num = "0" + num
+			num
+
+		l.time.text = toDoubleDigits(time.getHours()) + ":" + toDoubleDigits(time.getMinutes())
+		l.time.font = "normal bold 90px Arial"
+		l.time.x = 1505
+		l.time.y = 350
+		l.time.y += 10 if @isFirefox
+		# l.time._layer._element.style.letterSpacing = "0px"
 
 		if lang_flag == 1
-			 # English
+			# English
+			l.next.x = 15
+			l.next.y = 300
+			l.next.font = "normal normal 120px Arial"
 
+			l.num_text.x = 1350
+			l.num_text.y = 30
+			l.num_text.font = "normal normal 60px Arial"
+
+			l.time_text.x = 1640
+			l.time_text.y = 300
+			l.time_text.font = "normal normal 55px Arial"
 		else
 			# Japanese
+			l.next.font = "normal bold 120px iwata"
+			l.next.x = 15
+			l.next.y = 335
+
+			l.next_is.font = "normal bold 120px iwata"
+			l.next_is.x = 1260
+			l.next_is.y = 335
+			
+			l.num_text.x = 1515
+			l.num_text.y = 195
+			l.num_text.font = "normal bold 59px iwata"
+
+			l.time_text.x = 1640
+			l.time_text.y = 285
+			l.time_text.font = "normal bold 60px iwata"
+
 
 	_initSize: =>
 		width = $(window).width()
@@ -292,7 +319,7 @@ class @TrainVision
 		@timerCB = [
 			{
 				name: "main"
-				time: 1
+				time: 3
 				cb: @updateMainPanel
 			},
 			{
@@ -313,7 +340,7 @@ class @TrainVision
 			if @_timerHookCount % 3 == 0
 				# @set_station @station_key[@station_c++]
 				console.log ""
-		@set_station @station_key[@station_c++]
+		# @set_station @station_key[@station_c++]
 
 		console.log "update main panel"
 		@set_station 

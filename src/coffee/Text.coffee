@@ -16,6 +16,31 @@ class @Text
 		"Next"
 	]
 
+	next_is:[
+		"です"
+		""
+	]
+	
+	num_text:[
+		"号車"
+		"Car No."
+	]
+
+	num:[
+		""
+		""
+	]
+
+	time_text:[
+		"現在時刻"
+		"Time Now"
+	]
+
+	time:[
+		""
+		""
+	]
+
 	station:
 		tachikawa:[
 			"立川"
