@@ -35,7 +35,7 @@ class @Text
 		]
 		kokubunji:[
 			"国分寺"
-			"Kokubunji"
+			"Kokubunji" # 9
 			"こくぶんじ"
 		]
 		musashi_koganei:[

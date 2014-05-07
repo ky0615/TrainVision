@@ -28,6 +28,8 @@ class @TrainVision
 		h:0
 
 	ZOOM: 1
+
+	isFirefox: 0
 	
 	label:
 		station: null
@@ -103,6 +105,7 @@ class @TrainVision
 		@set_main_panel lang_flag
 
 	set_station_label: (lang_flag)=>
+		lang_flag = 2
 		if !@label.station
 			@label.station = new Label(@station[lang_flag])
 			@scene.station.addChild @label.station
@@ -142,48 +145,57 @@ class @TrainVision
 
 			width = 1000
 			x = 520
-			y = 100
+			y = 120
 			scale = 1
 			align = "center"
+			if @station_name == "mitaka"
+				y = 150
+			if @station_name == "tachikawa" or @station_name == "kunitachi"
+				y = 150
 			if @station_name.length >= 9
 				width = 1500
 				scale = 0.65
-				x = 280
+				x = 270
+				y = 100
 				if @station_name == "kichijoji"
-					scale = 0.9
+					scale = 0.8
 					x = 270
 			if @station_name == "musashi_sakai"
 				width = 2500
-				x = -7
-				y = 140
-				scale = 0.57
-				fontsize = fontsize /1.23
+				x = -125
+				y = 160
+				scale = 0.47
+				# fontsize = fontsize
 				align = "left"
 				station._layer._element.style.letterSpacing = 'normal'
 			if @station_name.length >= 15
 				width = 2500
 				x = -7
-				y = 140
+				y = 160
 				scale = 0.57
 				fontsize = fontsize /1.25
 				align = "left"
-				if @station_name == "musashi_koganei"
+				if @station_name == "nishi_kokubunji"
 					scale = 0.53
-					x = -55
+					x = -48
+				if @station_name == "musashi_koganei"
+					scale = 0.50
+					x = -100
 				if @station_name == "higashi_koganei"
-					scale = 0.56
-					x = -20
+					scale = 0.52
+					x = -70
 			
 			station.font = "normal bold " + fontsize + "px Arial";
 			station.width = width
 			station.textAlign = align
 			@label.station.x = x
-			@label.station.y = y
+			y += 30 if @isFirefox
+			@label.station.y = y 
 			station.scaleX = scale
 
 		else if lang_flag == 2
 			# ひらがな
-			width = 1500
+			width = 2500
 			x = 280
 			y = 140
 			scale = 0.8
@@ -192,6 +204,8 @@ class @TrainVision
 			if @station[lang_flag].length >= 5
 				x = 260
 				scale = 0.6
+
+				# ここでフリーズ
 				station._layer._element.style.letterSpacing = '-6px'
 			if @station[lang_flag].length == 6
 				x = 220
@@ -199,11 +213,11 @@ class @TrainVision
 			if @station[lang_flag].length == 7
 				width = 2500
 				scale = 0.6
-				fontsize = fontsize / 1.15
+				# fontsize = fontsize / 1.15
 				x = 25
 				y = 150
-				align = "left"
-				station._layer._element.style.letterSpacing = '-10px'
+				# align = "left"
+				# station._layer._element.style.letterSpacing = '-10px'
 
 			if @station[lang_flag].length >= 8
 				width = 2500
@@ -232,15 +246,15 @@ class @TrainVision
 
 		for k, v of @label.main_parts
 			if not @label.main_parts[k]
-				console.log "create instance"
-				@label.main_parts[k] = new Label "次は"
-				@scene.main.addChild @label.main_parts[k]
+				@label.main_parts[k] = new Label()
+				@scene.station.addChild @label.main_parts[k]
 			l[k] = @label.main_parts[k]
 
 		l.next.text = Text.next[lang_flag]
+		l.next.width = 500
 		l.next.textAlign = "right"
-		l.next.moveTo 200, 150
-		l.next.font = "80px"
+		l.next.moveTo 0, 260
+		l.next.font = "180px iwata"
 
 		if lang_flag == 1
 			 # English
@@ -251,6 +265,7 @@ class @TrainVision
 	_initSize: =>
 		width = $(window).width()
 		height = $(window).height()
+
 		# TrainVisonを4:3で固定するため、横の長さを縦の長さから計算します。
 		if(height < width)
 			# 横長の画面の場合
@@ -263,6 +278,9 @@ class @TrainVision
 
 		@ZOOM = @STAGE_SIZE.w / @BG_SIZE.w
 
+		if window.navigator.userAgent.toLowerCase().indexOf("firefox") isnt -1
+			@isFirefox = 1
+
 		return
 
 	convSize:(size)=>
@@ -274,7 +292,7 @@ class @TrainVision
 		@timerCB = [
 			{
 				name: "main"
-				time: 3
+				time: 1
 				cb: @updateMainPanel
 			},
 			{
@@ -293,9 +311,11 @@ class @TrainVision
 			if @station_key.length <= @station_c
 				@station_c = 0
 			if @_timerHookCount % 3 == 0
-				@set_station @station_key[@station_c++]
+				# @set_station @station_key[@station_c++]
+				console.log ""
+		@set_station @station_key[@station_c++]
 
-		# console.log "update main"
+		console.log "update main panel"
 		@set_station 
 		@initMainPanel @_timerHookCount % 3
 		@_timerHookCount++
@@ -308,6 +328,7 @@ class @TrainVision
 	_timerHookCount:0
 
 	_timerHook: =>
+		console.log "timer"
 		for i in @timerCB
 			i._time = i._time | 1
 			if i._time >= i.time
