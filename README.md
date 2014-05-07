@@ -26,6 +26,12 @@ Windowsの人はググッて頑張って入れましょう。私はWidowsでは�
 これでsrc/jsフォルダにコンパイルされたJavascriptファイルが出力されます。  
 後はindex.htmlを開けば画面が出てくるはずです。  
 
+### How to use
+index.htmlにGETパラメータを指定することで駅名を指定できます。  
+例:吉祥寺駅にしたい場合 `index.html?station=kichijoji`  
+src/coffee/Text.coffeeに記述されている駅が利用することが出来ます。  
+また、そこに駅名を記述することで駅を追加することができます。  
+
 ## TODO
 enchant.jsを使用しているのですが、Label周りがとっても汚いため、誰か書きなおしてプルリク下さいお願いします。  
 font周りをどうにかしたいのと、Monacaか何かを使ってAndroid版とiPhone版をリリースしようかと思ってる。  
