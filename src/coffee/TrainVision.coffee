@@ -127,7 +127,6 @@ class @TrainVision
 		station.height = 400
 
 		station.scaleX = station.scaleY = 1
-		station._layer._element.style.letterSpacing = 'normal'
 
 
 		if lang_flag == 0
@@ -144,38 +143,39 @@ class @TrainVision
 			if station.text.length == 4
 				station.scaleX = 4/5
 				station.x -= 75
-			station.font = station._layer._element.style.font = "normal bold " + fontsize + "px iwata";
+			station.font = "normal bold " + fontsize + "px iwata";
 		else if lang_flag == 1
 			# English
 			# console.log station.text +  " " + @station_name + " " + @station_name.length
-			station._layer._element.style.letterSpacing = '-3px'
 
-			width = 1000
+			width = 1300
 			x = 520
 			y = 120
 			scale = 1
 			align = "center"
 			if @station_name == "mitaka"
-				y = 150
-			if @station_name == "tachikawa" or @station_name == "kunitachi"
-				y = 150
-				width = 3000
+				y = 100
+				x = 375
 			if @station_name.length >= 9
 				width = 1500
 				scale = 0.65
 				x = 270
 				y = 100
+				if @station_name == "tachikawa" or @station_name == "kunitachi"
+					width = 2000
+					y = 100
+					x = 25
+					scale = 0.64
 				if @station_name == "kichijoji"
 					scale = 0.8
 					x = 270
 			if @station_name == "musashi_sakai"
 				width = 2500
-				x = -125
-				y = 160
+				x = -130
+				y = 100
 				scale = 0.47
 				# fontsize = fontsize
 				align = "left"
-				station._layer._element.style.letterSpacing = 'normal'
 			if @station_name.length >= 15
 				width = 2500
 				x = -7
@@ -263,7 +263,7 @@ class @TrainVision
 		if lang_flag == 1
 			# English
 			l.next.x = 15
-			l.next.y = 300
+			l.next.y = 260
 			l.next.font = "normal normal 120px Arial"
 
 			l.num_text.x = 1350
