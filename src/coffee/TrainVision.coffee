@@ -340,9 +340,8 @@ class @TrainVision
 		if @flag
 			if @station_key.length <= @station_c
 				@station_c = 0
-			if @_timerHookCount % 3 == 0
+			# if @_timerHookCount % 3 == 0
 				# @set_station @station_key[@station_c++]
-				console.log ""
 		# @set_station @station_key[@station_c++]
 
 		console.log "update main panel"
@@ -360,7 +359,7 @@ class @TrainVision
 	_timerHook: =>
 		console.log "timer"
 		for i in @timerCB
-			i._time = i._time | 1
+			i._time = i._time || 1
 			if i._time >= i.time
 				i.cb()
 				i._time = 0
