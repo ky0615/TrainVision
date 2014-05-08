@@ -33,7 +33,7 @@ class @Text
 
 	time_text:[
 		"現在時刻"
-		"Time Now"
+		"Now"
 	]
 
 	time:[

@@ -269,7 +269,7 @@ class @TrainVision
 
 			l.time_text.x = 1640
 			l.time_text.y = 300
-			l.time_text.font = "normal normal 55px Arial"
+			l.time_text.font = "normal normal 50px Arial"
 		else
 			# Japanese
 			l.next.font = "normal bold 120px iwata"
