@@ -11,8 +11,15 @@ http://opensource.org/licenses/mit-license.php
 ###
 
 Text = null
-
+###
+	Parameter
+	station:	Starting Station. (default: tachikawa)
+	m_interval:	Main panel set interval second.(default: 3)
+	c_flag:		Change Station name(default: 1)
+###
 class @TrainVision
+	get: null
+
 	timer: null
 	timerCB: []
 
@@ -57,7 +64,7 @@ class @TrainVision
 	station_key: []
 
 	init: =>
-		get = window.getRequest()
+		@get = get = window.getRequest()
 		Text = new window.Text
 		for k, v of Text.station
 			@station_key.push k
@@ -69,6 +76,10 @@ class @TrainVision
 					@station_c = k
 		else
 			@set_station "tachikawa"
+
+		if get.c_flag
+			@flag = 1
+		else @flag = 0
 
 		@_initSize()
 		@_initGame @BG_SIZE.w, @BG_SIZE.h
@@ -331,6 +342,10 @@ class @TrainVision
 				cb: @updateSubPanel
 			}
 		]
+
+		if @get.m_interval
+			@timerCB[0].time = @get.m_interval
+
 		return
 
 
@@ -340,8 +355,8 @@ class @TrainVision
 		if @flag
 			if @station_key.length <= @station_c
 				@station_c = 0
-			# if @_timerHookCount % 3 == 0
-				# @set_station @station_key[@station_c++]
+			if @_timerHookCount % 3 == 0
+				@set_station @station_key[@station_c++]
 		# @set_station @station_key[@station_c++]
 
 		console.log "update main panel"
