@@ -64,6 +64,9 @@ class @TrainVision
 
 		if(get.station)
 			@set_station get.station
+			for k, v of @station_key
+				if v is get.station
+					@station_c = k
 		else
 			@set_station "tachikawa"
 
