@@ -16,6 +16,7 @@ Text = null
 	station:	Starting Station. (default: tachikawa)
 	m_interval:	Main panel set interval second.(default: 3)
 	c_flag:		Change Station name(default: 1)
+	car_num:	CarNumber(default: 1)
 ###
 class @TrainVision
 	get: null
@@ -58,7 +59,7 @@ class @TrainVision
 	station_name: "tachikawa"
 
 	train:
-		car_num: 13
+		car_num: 1
 		go: "東京行"
 
 	station_key: []
@@ -78,8 +79,13 @@ class @TrainVision
 			@set_station "tachikawa"
 
 		if get.c_flag
-			@flag = 1
-		else @flag = 0
+			@flag = get.c_flag
+		else @flag = 1
+
+		for k, v of @train
+			if get[k]
+				@train[k] = get[k]
+		
 
 		@_initSize()
 		@_initGame @BG_SIZE.w, @BG_SIZE.h
