@@ -48,6 +48,7 @@ class @TrainVision
 			num: null
 			time_text: null
 			time: null
+			destination: null
 	scene:
 		station: null
 		main: null
@@ -60,7 +61,12 @@ class @TrainVision
 
 	train:
 		car_num: 1
-		go: "東京行"
+		destination: "tokyo"
+
+	destination:[
+		"東京行"
+		"For Tōkyo"
+	]
 
 	station_key: []
 
@@ -277,6 +283,10 @@ class @TrainVision
 		l.time.y += 10 if @isFirefox
 		# l.time._layer._element.style.letterSpacing = "0px"
 
+		l.destination.text = @train.destination
+		l.destination.x = 200
+		l.destination.y = 20
+
 		if lang_flag == 1
 			# English
 			l.next.x = 15
@@ -290,6 +300,8 @@ class @TrainVision
 			l.time_text.x = 1640
 			l.time_text.y = 300
 			l.time_text.font = "normal normal 50px Arial"
+
+			l.destination.font = "normal normal 50px Arial"
 		else
 			# Japanese
 			l.next.font = "normal bold 120px iwata"
@@ -307,6 +319,8 @@ class @TrainVision
 			l.time_text.x = 1640
 			l.time_text.y = 285
 			l.time_text.font = "normal bold 60px iwata"
+
+			l.destination.font = "normal bold 60px iwata"
 
 
 	_initSize: =>
