@@ -69,6 +69,12 @@ class @Text
 			"For Shinjuku"
 		]
 		nakano:[
+			"中野行"
+			"For Nakano"
+		]
+		mitaka:[
+			"三鷹行"
+			"For Mitaka"
 		]
 		takao:[
 			"高尾行"
