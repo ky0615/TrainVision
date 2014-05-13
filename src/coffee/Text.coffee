@@ -76,6 +76,39 @@ class @Text
 		]
 		# 神田　御茶ノ水　新宿　中野　三鷹　東小金井　武蔵小金井　国分寺　立川　豊田　八王子　大月　相模湖　四方津　河口湖　富士山　富士吉田　　御嶽　青梅　青梅・武蔵五日市　西立川　箱根ヶ崎・武蔵五日市　武蔵五日市・高麗川　奥多摩　河辺　
 
+	get_destination_text:(lang_flag=1, station="tokyo")=>
+		if lang_flag isnt 1
+			lang_flag = 0
+
+		if not Array.isArray(station)
+			# 通常
+			if not @station[station]
+				station = "tokyo"
+			if lang_flag is 1
+				# English
+				return "For " + @station[station][1]
+			else
+				# Japanese
+				return @station[station][0] + "行"
+		else
+			# 別れるやつ
+			text = ""
+			stack = []
+			if lang_flag is 1
+				text += "For "
+			for s in station
+				if not @station[s]
+					s = "tokyo"
+				stack.push @station[s][lang_flag]
+			if lang_flag
+				text += stack.join " and "
+			else
+				text += stack.join "・"
+			if not lang_flag
+				text += "行"
+			return text
+			require
+
 	destination_station:
 
 		###　青梅線・五日市線・八高線　###
